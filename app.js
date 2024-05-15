@@ -8,7 +8,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const instructorRoutes = require("./routes/instructorRoutes");
 const authRoutes = require("./routes/authRoutes");
 require("dotenv").config();
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 const server = createServer(app);
 
