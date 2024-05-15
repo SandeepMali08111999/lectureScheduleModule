@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Instructor Panel</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .logout-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Instructor Panel</h1>
+
+      <!-- Navigation -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Instructor Panel
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Lecture List -->
+      <h2>Lecture List</h2>
+      <table class="table" id="lectureTable">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Lecture Title</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody id="lectureTableBody">
+          <!-- Lecture rows will be dynamically added here -->
+          <% formattedLectures.forEach((lecture, index) => { %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= lecture.courseName %></td>
+            <td><%= lecture.title %></td>
+            <td><%= lecture.date %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Logout Button -->
+    <div class="logout-button">
+      <form action="/auth/logout" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

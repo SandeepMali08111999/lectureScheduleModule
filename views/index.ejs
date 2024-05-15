@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture Scheduler</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(
+          to right,
+          #007bff,
+          #00c6ff
+        ); /* Attractive gradient background */
+        color: #333; /* Darker text for better contrast */
+      }
+      .container {
+        max-width: 500px; /* Slightly wider for better content visibility */
+        margin: 60px auto; /* Increased top margin for spacing */
+        padding: 30px; /* Increased padding for better spacing inside the container */
+        background-color: #fff;
+        border-radius: 10px; /* Rounded corners for a softer look */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px; /* Increased bottom margin for spacing */
+        color: #007bff; /* Bright blue for emphasis */
+        font-weight: bold; /* Bold for impact */
+      }
+      .auth-links {
+        text-align: center;
+        margin-top: 30px; /* Increased top margin for spacing */
+      }
+      .auth-links a {
+        text-decoration: none;
+        color: #007bff;
+        margin: 0 15px; /* Increased right margin for better spacing between links */
+        border-bottom: 2px solid transparent;
+        transition: border-bottom-color 0.3s ease;
+        font-weight: bold; /* Bold for emphasis */
+      }
+      .auth-links a:hover {
+        border-bottom-color: #007bff;
+      }
+      @media (max-width: 768px) {
+        /* Responsive adjustments for smaller screens */
+        .container {
+          padding: 20px;
+        }
+        h1 {
+          font-size: 24px; /* Smaller font size for mobile */
+        }
+        .auth-links a {
+          margin: 0 7px; /* Reduced margin for tighter spacing on mobile */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to the Lecture Scheduler</h1>
+      <div class="auth-links">
+        <a href="/auth/login">Login</a> | <a href="/auth/register">Register</a>
+      </div>
+    </div>
+  </body>
+</html>

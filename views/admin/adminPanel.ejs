@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Panel</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .logout-button-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 9999; /* Ensure it appears on top of other content */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Admin Panel</h1>
+
+      <!-- Navigation -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Admin Panel
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Add Course Form -->
+      <h2>Add Course</h2>
+      <form
+        action="/admin/add-course"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label for="courseName">Course Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="courseName"
+            name="name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="courseLevel">Course Level</label>
+          <input
+            type="number"
+            class="form-control"
+            id="courseLevel"
+            name="level"
+            min="1"
+            max="5"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="courseDescription">Course Description</label>
+          <textarea
+            class="form-control"
+            id="courseDescription"
+            name="description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="courseImage">Course Image</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="courseImage"
+            name="course_image"
+            accept="image/*"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Course</button>
+      </form>
+
+      <!-- Add Lecture Form -->
+      <h2>Add Lecture</h2>
+      <form action="/admin/add-lecture-to-course" method="post">
+        <div class="form-group">
+          <label for="lectureTitle">Lecture Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lectureTitle"
+            name="title"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="lectureDate">Lecture Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="lectureDate"
+            name="date"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="courseSelect">Select Course</label>
+          <select class="form-control" id="courseSelect" name="courseId">
+            <% courses.forEach(course => { %>
+            <option value="<%= course._id %>"><%= course.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Lecture</button>
+      </form>
+
+      <!-- Instructor List -->
+      <h2>Instructor List</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Instructor Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% instructors.forEach((instructor, index) => { %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= instructor.username %></td>
+            <td><%= instructor.email %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+      <!-- Lecture Schedule -->
+      <h2>Lecture Schedule</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Lecture Title</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% lectures.forEach((lecture, index) => { %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= lecture.courseId.name %></td>
+            <td><%= lecture.title %></td>
+            <td><%= lecture.date.toDateString() %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <!-- Assign Lecture Form -->
+<h2>Assign Lecture to Instructor</h2>
+<!-- Container to display response message -->
+<div id="responseMessage" class="alert" style="display: none;"></div>
+
+<form action="/admin/assign-lecture" method="post" id="assignLectureForm">
+  <div class="form-group">
+    <label for="lectureSelect">Select Lecture</label>
+    <select class="form-control" id="lectureSelect" name="lectureId">
+      <% lectures.forEach(lecture => { %>
+      <option value="<%= lecture._id %>"><%= lecture.title %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="instructorSelect">Select Instructor</label>
+    <select class="form-control" id="instructorSelect" name="instructorId">
+      <% instructors.forEach(instructor => { %>
+      <option value="<%= instructor._id %>">
+        <%= instructor.username %>
+      </option>
+      <% }); %>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Assign Lecture</button>
+</form>
+   <!-- Logout Button -->
+   <div class="logout-button-container">
+    <form action="/auth/logout" method="post">
+      <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+  </div>
+    <script>
+      // Submit form asynchronously
+      document.getElementById('assignLectureForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent default form submission
+    
+        // Fetch API
+        const response = await fetch('/admin/assign-lecture', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            lectureId: document.getElementById('lectureSelect').value,
+            instructorId: document.getElementById('instructorSelect').value
+          })
+        });
+    
+        // Handle response
+        const responseData = await response.json();
+        const responseMessageElement = document.getElementById('responseMessage');
+    
+        if (response.ok) {
+          // Success case
+          responseMessageElement.classList.remove('alert-danger');
+          responseMessageElement.classList.add('alert-success');
+        } else {
+          // Error case
+          responseMessageElement.classList.remove('alert-success');
+          responseMessageElement.classList.add('alert-danger');
+        }
+    
+        // Update response message
+        responseMessageElement.textContent = responseData.message;
+        responseMessageElement.style.display = 'block';
+      });
+    </script>
+  </body>
+</html>
